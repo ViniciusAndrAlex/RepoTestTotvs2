@@ -1,0 +1,21 @@
+WITH products AS (
+  SELECT name, price
+  FROM UNNEST([
+    STRUCT('Smartphone X10' AS name, 999.99 AS price),
+    STRUCT('Bluetooth Speaker', 59.90),
+    STRUCT('Mechanical Keyboard', 120.00),
+    STRUCT('Ergonomic Mouse', 39.99),
+    STRUCT('Curved Monitor 34"', 799.00),
+    STRUCT('Portable SSD 1TB', 149.50),
+    STRUCT('Wireless Charger', 29.99),
+    STRUCT('Noise-Isolating Earbuds', 89.90),
+    STRUCT('Smartwatch Pro', 199.99),
+    STRUCT('LED Desk Light', 24.50)
+  ])
+)
+SELECT
+  name,
+  price,
+  TO_HEX(MD5(name)) AS __mdmid,
+  UNIX_MICROS(TIMESTAMP(current_timestamp())) AS __mdmCounterForEntity
+FROM products
